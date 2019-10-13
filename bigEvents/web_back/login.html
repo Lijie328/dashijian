@@ -28,7 +28,9 @@
           <i class="iconfont icon-key"></i>
           <input type="text" class="input_txt" placeholder="邮箱/手机号" />
           <input type="password" class="input_pass" placeholder="密码" />
-          <input type="submit" class="input_sub" value="登 录" />
+          <!-- <input type="submit" class="input_sub" value="登 录" /> -->
+          <!-- 将按钮修改为普通按钮 -->
+          <input type="button" class="input_sub" value="登录">
         </form>
       </div>
     </div>
@@ -70,6 +72,8 @@
 <script src="./js/jquery-1.12.4.min.js"></script>
 <!-- 导入bs的js -->
 <script src="./js/bootstrap/js/bootstrap.min.js"></script>
+<script src="./tool/config.js"></script>
+<script src="../web_back/tool/user.js"></script>
 <script>
   /*
         用户登录
@@ -85,46 +89,33 @@
             2. 失败
                 1. 提示用户
     */
-  $(function() {
-    $('.input_sub').click(function(e) {
-      // 阻止默认行为
-      e.preventDefault()
-      // 获取用户名和密码
-      var user_name = $('.input_txt')
-        .val()
-        .trim()
-      var password = $('.input_pass')
-        .val()
-        .trim()
-      if (user_name == '' || password == '') {
-        // alert('哥们，写点啥呗！！')
-        // 修改内容
-        $('.my-modal-body').text('记得输入用户名和密码哦！！')
-        $('#myModal').modal()
-        return
+    // 给按钮设置点击事件
+    $('input_sub').on('click',function(){
+      // 检测内容是否存在
+      var txt = $('.input_txt').val();
+      var pass = $('.input_pass').val();
+
+      if(txt.trim()===''||pass.trim()===''){
+        $('#myModal').modal('show').find('.modal-body').text('请填写完整的用户名和密码！')；
+        return;
       }
-      // ajax
-      $.ajax({
-        // url: 'https://autumnfish.cn/big/admin/login',
-        // 替换为本地
-        url:"https://autumnfish.cn/big/admin/login",
-        type: 'post',
-        data: {
-          user_name: user_name,
-          password: password
+
+      // 发送请求
+      user.login({
+        data:{
+          user_name:txt,
+          password:pass
         },
-        success: function(backData) {
-          //   console.log(backData)
-          if (backData.code == 400) {
-            // alert('哥们，用户名或密码错了哦，你是机器人吗？')
-            $('.my-modal-body').text('哥们，用户名或密码错了哦！')
-            $('#myModal').modal()
-          } else if (backData.code == 200) {
-            // 去首页
-            window.location.href = './index.html'
-          }
+        callback:function(res){
+          if(res.code===200){
+            // 跳转到首页
+            location.href='./index.html';
+          }else{
+            // 错误提示
+            $('#myModal').modal('show').find('.modal-body').text('用户名或密码错误，请重新输入');
+
+          } 
         }
-      })
-    })
-  })
+      });
+    });
 </script>
