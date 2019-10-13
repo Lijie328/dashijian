@@ -73,7 +73,7 @@
 <!-- 导入bs的js -->
 <script src="./js/bootstrap/js/bootstrap.min.js"></script>
 <script src="./tool/config.js"></script>
-<script src="../web_back/tool/user.js"></script>
+<script src="./tool/user.js"></script>
 <script>
   /*
         用户登录
@@ -90,13 +90,13 @@
                 1. 提示用户
     */
     // 给按钮设置点击事件
-    $('input_sub').on('click',function(){
+    $('.input_sub').on('click',function(){
       // 检测内容是否存在
       var txt = $('.input_txt').val();
       var pass = $('.input_pass').val();
 
       if(txt.trim()===''||pass.trim()===''){
-        $('#myModal').modal('show').find('.modal-body').text('请填写完整的用户名和密码！')；
+        $('#myModal').modal('show').find('.modal-body').text('请填写完整的用户名和密码！');
         return;
       }
 
